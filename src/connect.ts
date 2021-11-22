@@ -21,11 +21,9 @@
  * ```
  * @module connect
  */
-import { readKeyFile } from './key_stores/unencrypted_file_system_keystore';
-import { InMemoryKeyStore, MergeKeyStore } from './key_stores';
+
 import { Near, NearConfig } from './near';
 import fetch from './utils/setup-node-fetch';
-import { logWarning } from './utils';
 
 global.fetch = fetch;
 
@@ -40,29 +38,5 @@ export interface ConnectConfig extends NearConfig {
  * Initialize connection to Near network.
  */
 export async function connect(config: ConnectConfig): Promise<Near> {
-    // Try to find extra key in `KeyPath` if provided.
-    if (config.keyPath && (config.keyStore || config.deps && config.deps.keyStore)) {
-        try {
-            const accountKeyFile = await readKeyFile(config.keyPath);
-            if (accountKeyFile[0]) {
-                // TODO: Only load key if network ID matches
-                const keyPair = accountKeyFile[1];
-                const keyPathStore = new InMemoryKeyStore();
-                await keyPathStore.setKey(config.networkId, accountKeyFile[0], keyPair);
-                if (!config.masterAccount) {
-                    config.masterAccount = accountKeyFile[0];
-                }
-                config.keyStore = new MergeKeyStore([
-                    keyPathStore,
-                    (config.keyStore || config.deps.keyStore)
-                ], { writeKeyStoreIndex: 1 });
-                if (!process.env["NEAR_NO_LOGS"]){
-                    console.log(`Loaded master account ${accountKeyFile[0]} key from ${config.keyPath} with public key = ${keyPair.getPublicKey()}`);
-                }
-            }
-        } catch (error) {
-            logWarning(`Failed to load master account key from ${config.keyPath}: ${error}`);
-        }
-    }
     return new Near(config);
 }
