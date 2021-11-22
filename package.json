@@ -7,17 +7,17 @@
         "url": "git+https://github.com/near/near-api-js.git"
     },
     "homepage": "https://github.com/near/near-api-js",
-    "main": "lib/index.js",
-    "module": "esm/index.js",
-    "browser": "lib/browser-index.js",
-    "types": "lib/index.d.ts",
+    "main": "esm/browser-index.js",
+    "module": "esm/browser-index.js",
+    "browser": "esm/browser-index.js",
+    "types": "esm/browser-index.d.ts",
     "exports": {
         ".": {
-            "import": "./esm/index.js",
-            "require": "./lib/index.js",
-            "default": "./lib/index.js"
+            "import": "./esm/browser-index.js",
+            "require": "./esm/browser-index.js",
+            "default": "./esm/browser-index.js"
         },
-        "./lib/key_stores": "./lib/key_stores/index.js"
+        "./esm/key_stores": "./esm/key_stores/index.js"
     },
     "dependencies": {
         "bn.js": "5.2.0",
