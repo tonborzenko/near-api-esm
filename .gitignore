@@ -19,3 +19,7 @@ package\-lock\.json
 
 # Generated typedoc files
 docs/
+
+# package.json need for correct import module
+esm/*
+!esm/package.json

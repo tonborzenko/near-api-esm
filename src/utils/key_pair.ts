@@ -1,4 +1,4 @@
-import nacl from 'tweetnacl';
+import nacl from 'tweetnacl-es6';
 import { base_encode, base_decode } from './serialize';
 import { Assignable } from './enums';
 

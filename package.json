@@ -4,16 +4,17 @@
     "version": "0.43.1",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/near/near-api-js.git"
+        "url": "git+https://github.com/tonborzenko/near-api-js.git"
     },
-    "homepage": "https://github.com/near/near-api-js",
-    "main": "lib/index.js",
+    "homepage": "https://github.com/tonborzenko/near-api-js",
+    "module": "esm/esm-index.js",
     "browser": "lib/browser-index.js",
     "types": "lib/index.d.ts",
     "dependencies": {
         "bn.js": "5.2.0",
-        "borsh": "^0.6.0",
+        "borsh": "npm:borsh-esm@^0.6.3",
         "bs58": "^4.0.0",
+        "buffer": "^6.0.3",
         "depd": "^2.0.0",
         "error-polyfill": "^0.1.3",
         "http-errors": "^1.7.2",
@@ -21,7 +22,7 @@
         "mustache": "^4.0.0",
         "node-fetch": "^2.6.1",
         "text-encoding-utf-8": "^1.0.2",
-        "tweetnacl": "^1.0.1"
+        "tweetnacl-es6": "^1.0.2"
     },
     "devDependencies": {
         "@types/bn.js": "^5.1.0",
@@ -53,8 +54,9 @@
         "dist": "yarn browserify && yarn doc",
         "browserify": "browserify browser-exports.js -i node-fetch -i http -i https -o dist/near-api-js.js && browserify browser-exports.js -i node-fetch -g uglifyify -o dist/near-api-js.min.js",
         "prebrowserify": "yarn build",
-        "prepublish": "not-in-install && (yarn build && yarn browserify) || in-install",
+        "prepublish": "yarn compile:esm",
         "compile": "tsc -p ./tsconfig.json",
+        "compile:esm": "tsc -p ./tsconfig.esm.json",
         "dev": "yarn compile -w",
         "doc": "typedoc src && touch docs/.nojekyll",
         "build": "yarn compile",
@@ -74,6 +76,7 @@
     },
     "files": [
         "lib",
+        "esm",
         "dist",
         "browser-exports.js"
     ],
