@@ -1,5 +1,5 @@
 import createError from 'http-errors';
-
+import NodeFetch from '../utils/setup-node-fetch';
 import exponentialBackoff from './exponential-backoff';
 import { TypedError } from '../providers';
 import { logWarning } from './errors';
@@ -27,7 +27,8 @@ export async function fetchJson(connectionInfoOrUrl: string | ConnectionInfo, js
 
     const response = await exponentialBackoff(START_WAIT_TIME_MS, RETRY_NUMBER, BACKOFF_MULTIPLIER, async () => {
         try {
-            const response = await fetch(connectionInfo.url, {
+            const resolveFetch = typeof fetch !== 'function' ? NodeFetch : fetch;
+            const response = await resolveFetch(connectionInfo.url, {
                 method: json ? 'POST' : 'GET',
                 body: json ? json : undefined,
                 headers: { ...connectionInfo.headers, 'Content-Type': 'application/json; charset=utf-8' }
